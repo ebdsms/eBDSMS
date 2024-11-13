@@ -68,9 +68,7 @@ How to use ?
 # Implement the eBDSMS class in Flutter:
 Create eBDSMS Class. 
 ``` gradle
-  import 'dart:async';
-import 'dart:convert';
-import 'dart:math';
+  import 'dart:math';
 import 'package:http/http.dart' as http;
 
 class eBDSMS {
@@ -122,6 +120,32 @@ class OTP {
     final random = Random();
     return List.generate(length, (_) => randomChars[random.nextInt(randomChars.length)]).join();
   }
+}
+
+void main() async {
+  String apiKey = "YOUR_API_KEY";
+  String deviceNumber = "DEVICE_NUMBER";
+  String number = "SEND_NUMBER";
+  String message = "MESSAGE";
+
+  // Generate OTP
+  OTP otp = OTP();
+  String otpString = otp.generateOTP(6);
+  print("Generated OTP: $otpString");
+
+  // Create eBDSMS instance with the message + OTP
+  eBDSMS sms = eBDSMS(
+    apiKey: apiKey,
+    number: number,
+    message: "$message $otpString",
+    device: deviceNumber,
+    extra: '',
+    others: '',
+  );
+
+  // Send SMS
+  String response = await sms.sendSms();
+  print("SMS Response: $response");
 }
 
 ```
