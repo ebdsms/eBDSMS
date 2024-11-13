@@ -35,7 +35,7 @@ Add the following code inside your `Activity`:
     private static String NUMBER = "SEND_NUMBER";
     private static String MESSAGE = "MESSAGE";
 ```
-# SMS Send Process
+# Send OTP Process
 ``` gradle
 // If you want to send OTP then use this 2 line code, or skip this 2 line code.
 
