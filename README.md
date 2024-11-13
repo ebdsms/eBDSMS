@@ -36,11 +36,12 @@ Add the following code inside your `Activity`:
     private static String MESSAGE = "MESSAGE";
 ```
 # Send OTP Process
+Note: Use this code send otp:
 ``` gradle
 // If you want to send OTP then use this 2 line code, or skip this 2 line code.
 
  eBDSMS.OTP otp = new eBDSMS.OTP();
- String otpString = otp.OTPString(6);
+ String otpString = otp.OTPString(6); // Enter the value of the number you want to send OTP like 4,6
 ```
 
 # SMS Send Process
@@ -49,12 +50,6 @@ Note: Use this code when the sms send button is clicked:
 
  eBDSMS sms = new eBDSMS(API_KEY,DEVICE_NUMBER,NUMBER,MESSAGE+" "+otpString,null,null);
  sms.sendSms(this);
-```
-# OTP Send Process
-Note: Use this code send otp:
-``` gradle
-eBDSMS.OTP otp = new eBDSMS.OTP();
-String otpString = otp.OTPString(6); // Enter the value of the number you want to send OTP like 4,6
 ```
 
 # eBDSMS SDK Integration for Flutter
