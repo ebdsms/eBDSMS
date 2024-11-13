@@ -34,15 +34,18 @@ Add the following code inside your `Activity`:
     private static String DEVICE_NUMBER = "DEVICE_NUMBER";
     private static String NUMBER = "SEND_NUMBER";
     private static String MESSAGE = "MESSAGE";
-```  
-
+```
 # SMS Send Process
-Note: Use this code when the sms send button is clicked:
 ``` gradle
 // If you want to send OTP then use this 2 line code, or skip this 2 line code.
 
  eBDSMS.OTP otp = new eBDSMS.OTP();
  String otpString = otp.OTPString(6);
+```
+
+# SMS Send Process
+Note: Use this code when the sms send button is clicked:
+``` gradle
 
  eBDSMS sms = new eBDSMS(API_KEY,DEVICE_NUMBER,NUMBER,MESSAGE+" "+otpString,null,null);
  sms.sendSms(this);
