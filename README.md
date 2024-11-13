@@ -39,6 +39,8 @@ Add the following code inside your `Activity`:
 # SMS Send Process
 Note: Use this code when the sms send button is clicked:
 ``` gradle
+// If you want to send OTP then use this 2 line code, or skip this 2 line code.
+
  eBDSMS.OTP otp = new eBDSMS.OTP();
  String otpString = otp.OTPString(6);
 
