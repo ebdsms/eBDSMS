@@ -9,11 +9,11 @@ import com.rbmjltd.ebdsms.eBDSMS;
 
 public class MainActivity extends AppCompatActivity {
 
-     String API_KEY = "YOUR_API_KEY";
-     String DEVICE_NUMBER = "DEVICE_NUMBER";
+    String API_KEY = "YOUR_API_KEY";
+    String DEVICE_NUMBER = "DEVICE_NUMBER";
 
-     String NUMBER = "SEND_NUMBER";
-     String MESSAGE = "MESSAGE";
+    String NUMBER = "TYPE_YOUR_SENDER_NUMBER";
+    String MESSAGE = "TYPE_YOUR_MESSAGE";
 
 
     @Override
@@ -25,8 +25,9 @@ public class MainActivity extends AppCompatActivity {
         String otpString = otp.OTPString(6);
         System.out.println(otpString);
 
-        eBDSMS sms = new eBDSMS(API_KEY,DEVICE_NUMBER,NUMBER,MESSAGE+" "+otpString,null,null);
-        sms.sendSms(this);
+
+        eBDSMS ebdsms = new eBDSMS(API_KEY,NUMBER,MESSAGE+" "+otpString, DEVICE_NUMBER, null,null,getApplicationContext());
+        ebdsms.sendSms();
 
 
 

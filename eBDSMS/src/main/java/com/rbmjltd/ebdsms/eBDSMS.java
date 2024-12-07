@@ -2,6 +2,7 @@ package com.rbmjltd.ebdsms;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,20 +18,20 @@ public class eBDSMS {
     private String device;
     private String extra;
     private String others;
-
+    private Context context;
 
     public eBDSMS(String apiKey, String number, String message,
-                  String device, String extra, String others) {
+                  String device, String extra, String others, Context context) {
         this.apiKey = apiKey;
         this.number = number;
         this.message = message;
         this.device = device;
         this.extra = extra;
         this.others = others;
-
+        this.context = context;
     }
 
-    public void sendSms(Context context) {
+    public void sendSms() {
         new SendSmsTask().execute();
     }
 
@@ -49,10 +50,6 @@ public class eBDSMS {
                 URL url = new URL(urlStr);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
-                conn.setDoOutput(true);
-                OutputStream os = conn.getOutputStream();
-                os.close();
-
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
@@ -67,26 +64,27 @@ public class eBDSMS {
 
         @Override
         protected void onPostExecute(String result) {
-            // Handle the result (e.g., show a Toast or log the result)
+            if (result.contains("success") || result.contains("ok") || result.contains("true")) { // Check based on API response
+                Toast.makeText(context, "SMS sent successfully!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "Failed to send SMS. Please try again.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-
     public static class OTP {
-
         String LATTER = "0987654321";
         String NUMBER = "1234567890";
 
-        char[] RANDOM = (LATTER+LATTER.toUpperCase()+NUMBER).toCharArray();
+        char[] RANDOM = (LATTER + LATTER.toUpperCase() + NUMBER).toCharArray();
 
-        public String OTPString(int lenght) {
-            StringBuilder result = new StringBuilder(lenght);
-            for (int i = 0; i < lenght; i++) {
+        public String OTPString(int length) {
+            StringBuilder result = new StringBuilder(length);
+            for (int i = 0; i < length; i++) {
                 result.append(RANDOM[new Random().nextInt(RANDOM.length)]);
             }
             return result.toString();
         }
-
     }
 
 }
