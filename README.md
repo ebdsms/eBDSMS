@@ -22,34 +22,32 @@ dependencyResolutionManagement {
 > Step 2. Add the dependency to your `build.gradle`:
 ``` gradle
 dependencies {
-	        implementation 'com.github.ebdsms:eBDSMS:2.0.4'
+	        implementation 'com.github.ebdsms:eBDSMS:2.0.5'
 	}
 ```
 
 # Constants for SMS Send String
 Add the following code inside your `Activity`:
 ``` gradle
-
-    private static String API_KEY = "YOUR_API_KEY";
-    private static String DEVICE_NUMBER = "DEVICE_NUMBER";
-    private static String NUMBER = "SEND_NUMBER";
-    private static String MESSAGE = "MESSAGE";
+     String API_KEY = "YOUR_API_KEY";
+     String DEVICE_NUMBER = "DEVICE_NUMBER";
+     String NUMBER = "TYPE_YOUR_SENDER_NUMBER";
+     String MESSAGE = "TYPE_YOUR_MESSAGE";
 ```
 # Send OTP Process
 Note: Use this code send otp:
 ``` gradle
 // If you want to send OTP then use this 2 line code, or skip this 2 line code.
-
  eBDSMS.OTP otp = new eBDSMS.OTP();
  String otpString = otp.OTPString(6); // Enter the value of the number you want to send OTP like 4,6
+ System.out.println(otpString);
 ```
 
 # SMS Send Process
 Note: Use this code when the sms send button is clicked:
 ``` gradle
-
- eBDSMS sms = new eBDSMS(API_KEY,DEVICE_NUMBER,NUMBER,MESSAGE+" "+otpString,null,null);
- sms.sendSms(this);
+ eBDSMS ebdsms = new eBDSMS(API_KEY,NUMBER,MESSAGE+" "+otpString, DEVICE_NUMBER, "","",getApplicationContext());
+ ebdsms.sendSms();
 ```
 
 # eBDSMS SDK Integration for Flutter
