@@ -45,6 +45,7 @@ Note: Use this code send otp:
 
 # SMS Send Process
 Note: Use this code when the sms send button is clicked:
+If you do not send OTP please ignore OTP code & remove #otpString 
 ``` gradle
  eBDSMS ebdsms = new eBDSMS(API_KEY,NUMBER,MESSAGE+" "+otpString, DEVICE_NUMBER, "","",getApplicationContext());
  ebdsms.sendSms();
