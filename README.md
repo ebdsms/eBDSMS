@@ -22,7 +22,7 @@ dependencyResolutionManagement {
 > Step 2. Add the dependency to your `build.gradle`:
 ``` gradle
 dependencies {
-	        implementation 'com.github.ebdsms:eBDSMS:2.0.3'
+	        implementation 'com.github.ebdsms:eBDSMS:2.0.4'
 	}
 ```
 
@@ -34,19 +34,22 @@ Add the following code inside your `Activity`:
     private static String DEVICE_NUMBER = "DEVICE_NUMBER";
     private static String NUMBER = "SEND_NUMBER";
     private static String MESSAGE = "MESSAGE";
-```  
+```
+# Send OTP Process
+Note: Use this code send otp:
+``` gradle
+// If you want to send OTP then use this 2 line code, or skip this 2 line code.
+
+ eBDSMS.OTP otp = new eBDSMS.OTP();
+ String otpString = otp.OTPString(6); // Enter the value of the number you want to send OTP like 4,6
+```
 
 # SMS Send Process
 Note: Use this code when the sms send button is clicked:
 ``` gradle
- eBDSMS sms = new eBDSMS(API_KEY,NUMBER,MESSAGE,null,DEVICE_NUMBER,null,null);
+
+ eBDSMS sms = new eBDSMS(API_KEY,DEVICE_NUMBER,NUMBER,MESSAGE+" "+otpString,null,null);
  sms.sendSms(this);
-```
-# OTP Send Process
-Note: Use this code send otp:
-``` gradle
-eBDSMS_OTP otpValue = new eBDSMS_OTP();
-String otp = otpValue.OTPString(6); // Enter the value of the number you want to send OTP like 4,6
 ```
 
 # eBDSMS SDK Integration for Flutter
@@ -63,45 +66,86 @@ How to use ?
   http: ^0.14.0  # Make sure to use the latest version
 ```
 # Implement the eBDSMS class in Flutter:
+Create eBDSMS Class. 
 ``` gradle
-  import 'dart:convert';
+  import 'dart:math';
 import 'package:http/http.dart' as http;
 
-class EBDSMS {
+class eBDSMS {
   String apiKey;
   String number;
   String message;
-  String otp;
   String device;
   String extra;
+  String others;
 
-  EBDSMS({
+  eBDSMS({
     required this.apiKey,
     required this.number,
     required this.message,
-    required this.otp,
     required this.device,
     required this.extra,
+    required this.others,
   });
 
-  Future<void> sendSms() async {
-    String baseUrl = 'https://client.ebdsms.com/services/send.php';
-    String url = '$baseUrl?key=$apiKey&number=$number&message=$message&devices=$device&type=sms&prioritize=0';
-
+  Future<String> sendSms() async {
     try {
-      final response = await http.get(Uri.parse(url));
+      String baseUrl = "https://client.ebdsms.com/services/send.php";
+      Uri url = Uri.parse(
+          "$baseUrl?key=$apiKey&number=$number&message=$message&devices=$device&type=sms&prioritize=0");
 
+      final response = await http.get(url);
       if (response.statusCode == 200) {
-        // Successfully sent the SMS, handle response
-        print('SMS Sent: ${response.body}');
+        return response.body;
       } else {
-        // Error handling
-        print('Failed to send SMS: ${response.statusCode}');
+        return 'Error: ${response.statusCode}';
       }
     } catch (e) {
-      print('Error occurred while sending SMS: $e');
+      print(e);
+      return 'Error: $e';
     }
   }
+}
+
+class OTP {
+  final String letters = "0987654321";
+  final String numbers = "1234567890";
+  late List<String> randomChars;
+
+  OTP() {
+    randomChars = (letters + letters.toUpperCase() + numbers).split('');
+  }
+
+  String generateOTP(int length) {
+    final random = Random();
+    return List.generate(length, (_) => randomChars[random.nextInt(randomChars.length)]).join();
+  }
+}
+
+void main() async {
+  String apiKey = "YOUR_API_KEY";
+  String deviceNumber = "DEVICE_NUMBER";
+  String number = "SEND_NUMBER";
+  String message = "MESSAGE";
+
+  // Generate OTP
+  OTP otp = OTP();
+  String otpString = otp.generateOTP(6);
+  print("Generated OTP: $otpString");
+
+  // Create eBDSMS instance with the message + OTP
+  eBDSMS sms = eBDSMS(
+    apiKey: apiKey,
+    number: number,
+    message: "$message $otpString",
+    device: deviceNumber,
+    extra: '',
+    others: '',
+  );
+
+  // Send SMS
+  String response = await sms.sendSms();
+  print("SMS Response: $response");
 }
 
 ```
