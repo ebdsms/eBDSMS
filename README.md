@@ -45,7 +45,7 @@ Note: Use this code send otp:
 
 # SMS Send Process
 Note: Use this code when the sms send button is clicked:
-If you do not send OTP please ignore OTP code & remove #otpString 
+If you are not sending OTP then please ignore the OTP code and remove #otpString and do not use +88 before the number as the country code. Start the number like this 017,019,015,018,016.
 ``` gradle
  eBDSMS ebdsms = new eBDSMS(API_KEY,NUMBER,MESSAGE+" "+otpString, DEVICE_NUMBER, "","",getApplicationContext());
  ebdsms.sendSms();
